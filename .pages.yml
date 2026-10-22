@@ -1,0 +1,114 @@
+# The editor at https://app.pagescms.org: a form for the shows in
+# content/gigs.json. Saving there commits to GitHub, and the workflow in
+# .github/workflows/deploy.yml publishes the site a minute or two later.
+#
+# Every field of a show has to be listed below: the editor only writes back
+# what it knows, so a field missing here would disappear on the next save
+# (test/content.test.js checks this). Dates are plain text, not a date picker:
+# the picker can't hold "2025" or "2026-03" and would empty them.
+
+media:
+  input: assets/gigs
+  output: /assets/gigs
+  # no HEIC: most browsers can't show it (iPhones can share photos as JPG)
+  extensions: [jpg, jpeg, png, webp]
+  rename: safe
+
+content:
+  - name: shows
+    label: Shows
+    type: file
+    path: content/gigs.json
+    format: json
+    fields:
+      - name: gigs
+        label: Shows
+        description: Every show, past and upcoming. The site works out by the date which ones are upcoming; the day after a show it moves into the archive by itself.
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{date} · {venue}"
+        fields:
+          - name: id
+            label: Web address
+            description: "The show's page will be /live/<this>/. Lowercase letters, numbers and dashes, e.g. feierwerk-2026. Don't change it once the show is online, or old links break."
+            type: string
+            required: true
+            pattern:
+              regex: '^[a-z0-9]+(-[a-z0-9]+)*$'
+              message: Only lowercase letters, numbers and dashes, e.g. feierwerk-2026
+          - name: date
+            label: Date
+            description: "YYYY-MM-DD, e.g. 2026-11-14. For an old show where the day is unknown: 2025-07, or just 2025. Upcoming shows need the exact day."
+            type: string
+            required: true
+            pattern:
+              regex: '^\d{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12]\d|3[01]))?)?$'
+              message: Write the date like 2026-11-14 (or 2025-07, or 2025)
+          - name: time
+            label: Time
+            description: Optional. When we play (or doors), 24h, e.g. 20:30. Used for the calendar file.
+            type: string
+            pattern:
+              regex: '^(([01]\d|2[0-3]):[0-5]\d)?$'
+              message: Write the time like 20:30
+          - name: venue
+            label: Venue
+            description: Where we play, e.g. Backstage Club.
+            type: string
+            required: true
+          - name: city
+            label: City
+            description: Optional, e.g. Munich.
+            type: string
+          - name: event
+            label: Event
+            description: Optional. Festival, contest, tour or stage, e.g. Emergenza semifinal.
+            type: string
+          - name: info
+            label: Extra line
+            description: "Optional. One short line, e.g. Doors 19:00 · Free entry."
+            type: string
+          - name: tickets
+            label: Ticket link
+            description: Optional. Only shown before the show.
+            type: string
+            pattern:
+              regex: '^(https?://\S+)?$'
+              message: A full web address, starting with https://
+          - name: link
+            label: Event page
+            description: Optional. The venue's or festival's page for the show.
+            type: string
+            pattern:
+              regex: '^(https?://\S+)?$'
+              message: A full web address, starting with https://
+          - name: press
+            label: Article
+            description: Optional. An article about the show (newspaper, blog). Shown once the show has happened.
+            type: string
+            pattern:
+              regex: '^(https?://\S+)?$'
+              message: A full web address, starting with https://
+          - name: story
+            label: Story
+            description: Optional. A few lines about the night. An empty line starts a new paragraph.
+            type: text
+          - name: photos
+            label: Photos
+            description: "The first one is the cover: it sits under the show's rose on the homepage. JPG straight from the phone is fine; the site resizes it, turns it upright and removes the location data."
+            type: object
+            list:
+              collapsible:
+                summary: "{alt}"
+            fields:
+              - name: file
+                label: Photo
+                type: image
+                required: true
+              - name: alt
+                label: Description
+                description: "One sentence saying what's in the picture, for people who can't see it, e.g. The singer at the microphone in red light."
+                type: string
+                required: true

@@ -1,0 +1,264 @@
+{
+  "gigs": [
+    {
+      "id": "backstage-club",
+      "date": "2025",
+      "venue": "Backstage Club",
+      "city": "Munich",
+      "event": "Emergenza, round one",
+      "story": "Our first Emergenza round. Backstage Club was packed, and thanks to everyone who came out for us, we made it through to the next round.",
+      "photos": [
+        {
+          "file": "/assets/gigs/backstage-club/cover.webp",
+          "alt": "The band on the Backstage Club stage in blue light, phones up in the crowd"
+        },
+        {
+          "file": "/assets/gigs/backstage-club/01.webp",
+          "alt": "Singer and guitarist at the microphone, lit in blue"
+        },
+        {
+          "file": "/assets/gigs/backstage-club/02.webp",
+          "alt": "Wide shot of the stage: the whole band playing under yellow and blue lights"
+        },
+        {
+          "file": "/assets/gigs/backstage-club/03.webp",
+          "alt": "Hands in the air in front of the stage"
+        },
+        {
+          "file": "/assets/gigs/backstage-club/04.webp",
+          "alt": "Playing under the Emergenza banner"
+        }
+      ]
+    },
+    {
+      "id": "quax",
+      "date": "2025",
+      "venue": "Quax",
+      "city": "Munich",
+      "event": "SPH Music Masters",
+      "story": "SPH Music Masters at Quax. We gave it everything we had and played to a lot of new faces.",
+      "photos": [
+        {
+          "file": "/assets/gigs/quax/cover.webp",
+          "alt": "Black and white: the whole band on the Quax stage, drummer on the left"
+        },
+        {
+          "file": "/assets/gigs/quax/01.webp",
+          "alt": "Black and white: singing into the microphone, beams of light behind"
+        },
+        {
+          "file": "/assets/gigs/quax/02.webp",
+          "alt": "Black and white: guitarist with long hair, backlit by a spotlight"
+        },
+        {
+          "file": "/assets/gigs/quax/03.webp",
+          "alt": "Black and white: guitarist shot from below, light cutting through the haze"
+        },
+        {
+          "file": "/assets/gigs/quax/04.webp",
+          "alt": "Black and white: the drummer behind the kit, grinning, one hand up"
+        }
+      ]
+    },
+    {
+      "id": "penzberg",
+      "date": "2025",
+      "venue": "Nonnenwald Rock",
+      "city": "Penzberg",
+      "story": "Nonnenwaldrock was a fundraiser: local bands playing to raise money for the venue itself. Places like this keep the scene alive, and we were glad to give something back.",
+      "photos": [
+        {
+          "file": "/assets/gigs/penzberg/cover.webp",
+          "alt": "Black and white: the drummer mid-song"
+        },
+        {
+          "file": "/assets/gigs/penzberg/01.webp",
+          "alt": "Black and white: singing with eyes closed"
+        },
+        {
+          "file": "/assets/gigs/penzberg/02.webp",
+          "alt": "Guitarist and bassist side by side in red light"
+        },
+        {
+          "file": "/assets/gigs/penzberg/03.webp",
+          "alt": "Black and white: the bassist in a beam of stage light"
+        },
+        {
+          "file": "/assets/gigs/penzberg/04.webp",
+          "alt": "Black and white: guitarist with long hair, lit from behind"
+        }
+      ]
+    },
+    {
+      "id": "strom",
+      "date": "2025",
+      "venue": "Strom",
+      "city": "Munich",
+      "event": "Emergenza semifinal",
+      "story": "We won our Emergenza semifinal at Strom. That night sent us to the Bavarian final, and it's still one of the biggest moments we've had as a band.",
+      "photos": [
+        {
+          "file": "/assets/gigs/strom/cover.webp",
+          "alt": "The band on the Strom stage in haze and white light"
+        },
+        {
+          "file": "/assets/gigs/strom/01.webp",
+          "alt": "On stage in red light, next to the host with a microphone"
+        },
+        {
+          "file": "/assets/gigs/strom/02.webp",
+          "alt": "Black and white: three of us playing at the front of the stage"
+        },
+        {
+          "file": "/assets/gigs/strom/03.webp",
+          "alt": "Black and white: singer and bassist, one foot up on the monitor"
+        },
+        {
+          "file": "/assets/gigs/strom/04.webp",
+          "alt": "Both guitarists playing in the haze under spotlights"
+        }
+      ]
+    },
+    {
+      "id": "backstage-halle",
+      "date": "2025",
+      "venue": "Backstage Halle",
+      "city": "Munich",
+      "event": "Emergenza Bavarian final",
+      "story": "The Emergenza final for Bavaria, as one of the top ten bands in the state. We had a blast on that stage and went home with good feedback and a lot of motivation to keep going.",
+      "photos": [
+        {
+          "file": "/assets/gigs/backstage-halle/cover.webp",
+          "alt": "The singer in silhouette under a single spotlight, haze everywhere"
+        },
+        {
+          "file": "/assets/gigs/backstage-halle/01.webp",
+          "alt": "Black and white: guitarist crouched low on the stage"
+        },
+        {
+          "file": "/assets/gigs/backstage-halle/02.webp",
+          "alt": "The band playing in red and orange light"
+        },
+        {
+          "file": "/assets/gigs/backstage-halle/03.webp",
+          "alt": "Red stage, white light beams fanning out behind a guitarist"
+        },
+        {
+          "file": "/assets/gigs/backstage-halle/04.webp",
+          "alt": "A full Backstage Halle seen from the back, the band on a blue-lit stage"
+        }
+      ]
+    },
+    {
+      "id": "sommernaechte",
+      "date": "2025",
+      "venue": "Augsburger Sommernächte",
+      "city": "Augsburg",
+      "event": "3M Stage",
+      "story": "So many people. One of our biggest shows so far, on the 3M Stage at Augsburger Sommernächte, and it clicked from the very start.",
+      "photos": [
+        {
+          "file": "/assets/gigs/sommernaechte/cover.webp",
+          "alt": "A band selfie on top of the Augsburger Sommernächte festival poster"
+        },
+        {
+          "file": "/assets/gigs/sommernaechte/01.webp",
+          "alt": "The crowd in the street at night, arms in the air"
+        },
+        {
+          "file": "/assets/gigs/sommernaechte/02.webp",
+          "alt": "The outdoor stage at night, the band playing between old town houses"
+        }
+      ]
+    },
+    {
+      "id": "glockenbachwerkstatt",
+      "date": "2026-03",
+      "venue": "Glockenbachwerkstatt",
+      "city": "Munich",
+      "event": "with The Racoons",
+      "story": "A spontaneous one: we played the Glockenbachwerkstatt in the Glockenbachviertel together with our friends The Racoons. Very DIY, an unforgettable Tuesday.",
+      "photos": [
+        {
+          "file": "/assets/gigs/glockenbachwerkstatt/cover.webp",
+          "alt": "Black and white: the drummer behind the kit, half in shadow, a blur of light on the wall behind"
+        },
+        {
+          "file": "/assets/gigs/glockenbachwerkstatt/01.webp",
+          "alt": "Black and white: the singer laughing into the microphone, guitar in hand, a white bass at the edge of the stage"
+        },
+        {
+          "file": "/assets/gigs/glockenbachwerkstatt/02.webp",
+          "alt": "Two shots of guitar and bass side by side: one in black and white, one in red and purple light"
+        }
+      ]
+    },
+    {
+      "id": "tiefstollenhalle",
+      "date": "2026-07",
+      "venue": "Tiefstollenhalle",
+      "city": "Peißenberg",
+      "event": "Benefit concert",
+      "press": "https://www.merkur.de/lokales/weilheim/peissenberg-ort29264/peissenberg-polling-kinderhospiz-hospiz-tiefstollenhalle-benefizkonzert-kinderchor-rockband-94410072.html",
+      "story": "A benefit concert at the Tiefstollenhalle for the children's hospice being built in Polling, with The Mains, Metamorphine and Archonaut.",
+      "photos": [
+        {
+          "file": "/assets/gigs/tiefstollenhalle/cover.webp",
+          "alt": "A flash photo outside at night: two people hugging by a wooden bench, a sunflower and beer bottles on the bench"
+        }
+      ]
+    },
+    {
+      "id": "zamanand-2026",
+      "date": "2026-09",
+      "venue": "Zamanand",
+      "city": "Munich",
+      "event": "Odeonsplatz stage",
+      "story": "Zamanand is Bavarian for “together”, and for a weekend in September Ludwigstraße became one long free street festival, from Odeonsplatz up to the Siegestor. We played the Odeonsplatz stage after dark, right in the middle of the city.",
+      "photos": [
+        {
+          "file": "/assets/gigs/zamanand-2026/cover.webp",
+          "alt": "Black and white: singing at the microphone, guitar in hand, the drummer and a guitarist behind"
+        },
+        {
+          "file": "/assets/gigs/zamanand-2026/01.webp",
+          "alt": "Black and white: the whole band on the Zamanand stage, the drummer in the middle, the festival banner behind"
+        },
+        {
+          "file": "/assets/gigs/zamanand-2026/02.webp",
+          "alt": "Black and white: bassist and guitarist bent low over their instruments at the front of the stage"
+        },
+        {
+          "file": "/assets/gigs/zamanand-2026/03.webp",
+          "alt": "Black and white: the bassist in a white shirt, head down, under the stage lights"
+        }
+      ]
+    },
+    {
+      "id": "sprungbrett-2026",
+      "date": "2026-09-17",
+      "venue": "Feierwerk Kranhalle",
+      "city": "Munich",
+      "event": "Sprungbrett contest",
+      "story": "Sprungbrett, Feierwerk's contest for Munich musicians: we played the Kranhalle together with Moskau78, PoWasser and Hospital Meat.",
+      "photos": [
+        {
+          "file": "/assets/gigs/sprungbrett-2026/cover.webp",
+          "alt": "Singer and guitarist in silhouette at the microphone, haze and a bright spotlight behind"
+        },
+        {
+          "file": "/assets/gigs/sprungbrett-2026/01.webp",
+          "alt": "Guitarist kneeling at the front of the stage, grinning into the camera, the bassist bent over the bass behind, in blue light"
+        },
+        {
+          "file": "/assets/gigs/sprungbrett-2026/02.webp",
+          "alt": "The bassist in a white jacket under purple spotlights, the Sprungbrett banner behind"
+        },
+        {
+          "file": "/assets/gigs/sprungbrett-2026/03.webp",
+          "alt": "Guitarist bent low over the guitar, long hair lit up yellow by a spotlight"
+        }
+      ]
+    }
+  ]
+}

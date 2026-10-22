@@ -1,0 +1,75 @@
+# Checks the site and publishes it on GitHub Pages.
+#
+# On main (every push, also the ones from the editor at pagescms.org, and once
+# a night, so shows that have happened move into the archive in the HTML too):
+# prepare photos, test, build, check, publish.
+# On a pull request: the same checks, nothing published. The result shows up
+# on the pull request, so you know before merging.
+#
+# If anything is wrong (a typo in content/gigs.json, a missing photo, a
+# failing test), the run stops before publishing and the site stays as it
+# was. The run's page on GitHub (Actions tab) says what to fix.
+#
+# Publishing needs Settings → Pages → Build and deployment → Source: "GitHub Actions".
+
+name: Check and publish
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "30 1 * * *" # 01:30 UTC, after midnight in Munich
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  actions: read
+
+# one publish at a time, a newer one waits for the one before; checks on a
+# pull request run on their own, and a newer push to it replaces the older run
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('checks-{0}', github.ref) || 'pages' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Prepare photos (turn upright, resize, remove location data)
+        run: |
+          npm install --no-save --no-package-lock sharp@0.34.3
+          node scripts/prepare-photos.js
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: node src/build.js --out _site
+
+      - name: Check
+        run: node scripts/check.js _site
+
+      - if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

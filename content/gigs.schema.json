@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Falling For Roza – shows",
+  "description": "Every show, past and upcoming. The website decides by date which ones are upcoming. See content/README.md.",
+  "type": "object",
+  "required": ["gigs"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "gigs": {
+      "type": "array",
+      "description": "Oldest first. Add new shows at the end.",
+      "items": { "$ref": "#/definitions/gig" }
+    }
+  },
+  "definitions": {
+    "gig": {
+      "type": "object",
+      "required": ["id", "date", "venue"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+          "description": "Short name for the web address: /live/<id>/. Lowercase letters, numbers and dashes, e.g. \"feierwerk-2026\". Don't change it once the show is online, or old links break."
+        },
+        "placeholder": {
+          "type": "boolean",
+          "description": "Marks a stand-in show with made-up details. Remove this line once the real details are in. npm run check won't pass while any show is still a placeholder, so none goes online by accident."
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^\\d{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12]\\d|3[01]))?)?$",
+          "description": "YYYY-MM-DD, e.g. \"2026-11-14\". If the exact day is unknown (old shows only), \"2025-07\" or \"2025\" works too."
+        },
+        "time": {
+          "type": "string",
+          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$",
+          "description": "Optional. When we play (or doors), 24h, e.g. \"20:30\"."
+        },
+        "venue": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Where we play, e.g. \"Backstage Club\"."
+        },
+        "city": {
+          "type": "string",
+          "description": "Optional, e.g. \"Munich\"."
+        },
+        "event": {
+          "type": "string",
+          "description": "Optional. Festival, contest, tour or stage, e.g. \"Emergenza semifinal\"."
+        },
+        "story": {
+          "type": "string",
+          "description": "Optional. A few lines about the night, in our words. Separate paragraphs with an empty line (\\n\\n)."
+        },
+        "info": {
+          "type": "string",
+          "description": "Optional. One short line of extra information, e.g. \"Doors 19:00 · Free entry\"."
+        },
+        "tickets": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://",
+          "description": "Optional. Ticket link. Only shown while the show is upcoming."
+        },
+        "link": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://",
+          "description": "Optional. Event page (venue, festival, Facebook event …)."
+        },
+        "press": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://",
+          "description": "Optional. An article about the show (newspaper, blog). Shown on the show's page once it has happened."
+        },
+        "photos": {
+          "type": "array",
+          "description": "Optional. The first one is the cover. Photos live in assets/gigs/; scripts/optimize-image.sh prepares them (online, the publishing workflow does).",
+          "items": {
+            "type": "object",
+            "required": ["file", "alt"],
+            "additionalProperties": false,
+            "properties": {
+              "file": {
+                "type": "string",
+                "pattern": "^(/assets/[^\\\\]+|[^/\\\\]+)\\.(webp|jpe?g|png|avif)$",
+                "description": "The photo's path, e.g. \"/assets/gigs/strom/cover.webp\" (or just \"cover.webp\" for a file in assets/gigs/<id>/)."
+              },
+              "alt": {
+                "type": "string",
+                "minLength": 1,
+                "description": "What's in the photo, for people who can't see it."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

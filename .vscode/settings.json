@@ -1,0 +1,8 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": ["/content/gigs.json"],
+      "url": "./content/gigs.schema.json"
+    }
+  ]
+}

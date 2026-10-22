@@ -1,0 +1,87 @@
+{
+  "name": "Falling For Roza",
+  "url": "https://www.fallingforroza.com",
+  "description": "Falling For Roza is a rock band from Munich.",
+  "tagline": "All heart, all noise. Let’s fall together.",
+  "email": "hello@fallingforroza.com",
+  "socials": [
+    {
+      "name": "Instagram",
+      "url": "https://www.instagram.com/fallingforroza/"
+    },
+    {
+      "name": "Spotify",
+      "url": "https://open.spotify.com/artist/5qPFGbMxO8xYbVwYWFyLdY"
+    },
+    {
+      "name": "TikTok",
+      "url": "https://www.tiktok.com/@fallingforroza"
+    },
+    {
+      "name": "YouTube",
+      "url": "https://www.youtube.com/@FallingForRoza"
+    },
+    {
+      "name": "Apple Music",
+      "url": "https://music.apple.com/us/artist/falling-for-roza/1677844444"
+    }
+  ],
+  "releases": [
+    {
+      "title": "Red Shirt",
+      "kind": "EP",
+      "released": "2024-09-13",
+      "cover": "red-shirt.webp",
+      "coverAlt": "Red Shirt cover: a skeleton in a red shirt, painted in red",
+      "spotify": "album/0mHJKIXgOy4mB2VKC9ifmr",
+      "text": "Our first EP. Five songs, written, recorded and released by us.",
+      "apple": "https://music.apple.com/us/album/red-shirt-ep/1766000159",
+      "tracks": [
+        "Feel Like",
+        "To Whom I Have to Pray?",
+        "Red Shirt",
+        "Part of Me",
+        "Deceived"
+      ]
+    },
+    {
+      "title": "Made My Bed (Unplugged)",
+      "kind": "Single",
+      "released": "2023-12-24",
+      "cover": "made-my-bed-unplugged.webp",
+      "coverAlt": "Made My Bed (Unplugged) cover: the Made My Bed artwork in black and white",
+      "spotify": "track/7GJZLdTKlCibZIDTN3hA4A",
+      "apple": "https://music.apple.com/us/album/made-my-bed-unplugged-single/1721837073",
+      "text": "Made My Bed, stripped back."
+    },
+    {
+      "title": "Made My Bed",
+      "kind": "Single",
+      "released": "2023-12-08",
+      "cover": "made-my-bed.webp",
+      "coverAlt": "Made My Bed cover: someone hiding their face in their hands in front of a red sea, with the words Today I Swallow My Sorrow",
+      "spotify": "track/3WwFQRN9uhD6v04HjoLg8E",
+      "text": "About being stuck with choices you made yourself. One of our moodier songs.",
+      "apple": "https://music.apple.com/us/album/made-my-bed-single/1718769819"
+    },
+    {
+      "title": "Regrets",
+      "kind": "Single",
+      "released": "2023-05-19",
+      "cover": "leash.webp",
+      "coverAlt": "Regrets cover: flash photo of someone lying on a pavement at night",
+      "spotify": "track/5LXTKfrecQUdVWIuUZLM77",
+      "apple": "https://music.apple.com/us/album/regrets-single/1688410373"
+    },
+    {
+      "title": "Leash",
+      "kind": "Single",
+      "released": "2023-03-18",
+      "cover": "leash.webp",
+      "coverAlt": "Leash cover: flash photo of someone lying on a pavement at night",
+      "spotify": "album/4tQAbnuPhthAGuwiet4dnw",
+      "text": "The first song we ever put out.",
+      "apple": "https://music.apple.com/us/album/leash-single/1677929213"
+    }
+  ]
+}

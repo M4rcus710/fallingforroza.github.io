@@ -1,0 +1,1843 @@
+/* Falling For Roza
+ *
+ * Paper, ink and one black rose plant, cut like the band's stencil emblem:
+ * black shapes separated by paper-coloured hairlines. The nights hang on it
+ * as prints. Red marks what's coming up; in the footer the roots spread
+ * out under it.
+ *
+ * Type: Forum for names and titles (it sits close to the wordmark),
+ * IBM Plex Mono for everything you read.
+ */
+
+@font-face {
+  font-family: 'Forum';
+  src: url('/assets/fonts/forum-400.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/assets/fonts/ibm-plex-mono-400.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/assets/fonts/ibm-plex-mono-400-italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/assets/fonts/ibm-plex-mono-500.woff2') format('woff2');
+  font-weight: 500 700;
+  font-display: swap;
+}
+
+/* ---------- tokens ---------- */
+
+:root {
+  /* the two colours everything is made of; they stay put in dark mode */
+  --paper: #efe8dc;
+  --ink: #1d1916;
+
+  /* light mode: a black plant cut out of the paper */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --muted: #6a625b;
+  --line: rgb(29 25 22 / 0.2);
+  --red: #a3232a; /* what's coming up */
+  --on-red: #f8f4ec;
+  /* the plant, and the hairlines that cut it apart (the page showing through) */
+  --stem: #1d1a1a;
+  --leaf: #1d1a1a;
+  --cut: var(--paper);
+  /* rose petals: outsides by how much they face us, insides, the core, the rolled rims */
+  --petal: #1d1a1a;
+  --petal-3: #242020;
+  --petal-4: #2b2626;
+  --petal-in: #0c0a0a;
+  --petal-in-0: #050404;
+  --petal-core: #090707;
+  --rim: #3a3433;
+  --rim-in: #1a1616;
+  --photo-bg: #e4dccd; /* behind a photo while it loads */
+  /* the roots in the footer, faint on the paper */
+  --root-line: #c4b9aa;
+
+  --f-serif: 'Forum', 'Times New Roman', serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --gutter: clamp(16px, 4vw, 40px);
+  --max: 1180px;
+  --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
+
+  /* paper grain: a faint speckle tile */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .38 -.15'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* narrow screens: the stalk down the left edge (scripts/narrow-stalk.js) */
+  --stalk-tile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='1260'%3E%3Cpath d='M34 149.1L32.1 146.8L30.1 144.6L28.1 142.5L26.1 140.4L24 138.4L21.8 136.4L19.6 134.5L17.4 132.6L15.1 130.8L12.7 129L11.5 128.9L11.9 130.1L14.1 131.9L16.3 133.9L18.4 135.8L20.4 137.8L22.4 139.9L24.4 142L26.3 144.2L28.1 146.4L29.9 148.6L31.6 150.9Z' fill='%231d1a1a'/%3E%3Cpath d='M23.5 138.3L22.3 137.9L21.2 137.6L20.1 137.2L19 136.8L17.8 136.4L16.7 136L15.6 135.5L14.5 135.1L13.4 134.6L12.3 134.1L11.5 134.2L12 134.9L13 135.4L14.1 136L15.1 136.6L16.2 137.1L17.3 137.6L18.4 138.1L19.5 138.6L20.6 139.1L21.8 139.6L22.9 140Z' fill='%231d1a1a'/%3E%3Cg transform='translate(12.3 129.5) rotate(-52) scale(1.15)'%3E%3Cpath d='M0 0C-3.2 -2 -3.6 -6 0 -10C0 -9 0 -9 0 -10C3.6 -6 3.2 -2 0 0Z' fill='%231d1a1a' stroke='%23efe8dc' stroke-width='.6' stroke-linejoin='round'/%3E%3Cpath d='M-1.2 -8.6C0.4 -6.6 0.8 -3.4 0 -0.8' fill='none' stroke='%23efe8dc' stroke-width='.55'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' fill='%231d1a1a' stroke='%23efe8dc' stroke-width='.5'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' transform='scale(-1 1)' fill='%231d1a1a' stroke='%23efe8dc' stroke-width='.5'/%3E%3Cpath d='M0 1.6C-1.4 1.4 -1.6 -0.6 0 -1C1.6 -0.6 1.4 1.4 0 1.6Z' fill='%231d1a1a'/%3E%3C/g%3E%3Cpath d='M34.2 469.3L33.1 467.4L32 465.4L30.9 463.3L29.9 461.3L28.9 459.2L28 457.1L27.1 455L26.2 452.9L25.4 450.8L24.6 448.7L23.7 447.9L23.4 449L24 451.3L24.7 453.5L25.5 455.7L26.3 457.8L27.1 460L27.9 462.2L28.8 464.3L29.8 466.4L30.7 468.6L31.7 470.7Z' fill='%231d1a1a'/%3E%3Cg transform='translate(24 448.9) rotate(-18) scale(1.05)'%3E%3Cpath d='M0 0C-4.74 -2 -5.140000000000001 -6 -1.1199999999999999 -10C0 -8.3 0 -8.3 1.1199999999999999 -10C5.140000000000001 -6 4.74 -2 0 0Z' fill='%231d1a1a' stroke='%23efe8dc' stroke-width='.6' stroke-linejoin='round'/%3E%3Cpath d='M-1.9 -8.6C0.4 -6.6 0.8 -3.4 0 -0.8' fill='none' stroke='%23efe8dc' stroke-width='.55'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' fill='%231d1a1a' stroke='%23efe8dc' stroke-width='.5'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' transform='scale(-1 1)' fill='%231d1a1a' stroke='%23efe8dc' stroke-width='.5'/%3E%3Cpath d='M0 1.6C-1.4 1.4 -1.6 -0.6 0 -1C1.6 -0.6 1.4 1.4 0 1.6Z' fill='%231d1a1a'/%3E%3C/g%3E%3Cpath d='M31.9 758.9L29.8 756.9L27.6 754.8L25.5 752.7L23.5 750.5L21.5 748.3L19.5 746.1L17.6 743.8L15.8 741.4L13.9 739.1L12.2 736.7L11 736.1L11 737.5L12.7 740L14.4 742.5L16.1 744.9L17.9 747.4L19.8 749.8L21.7 752.1L23.6 754.4L25.6 756.7L27.7 758.9L29.8 761.1Z' fill='%231d1a1a'/%3E%3Cpath d='M23.6 751.1L23.3 750L22.9 748.9L22.6 747.9L22.2 746.8L21.8 745.8L21.4 744.7L21 743.7L20.6 742.7L20.2 741.7L19.7 740.7L19 740.1L18.9 741L19.2 742L19.5 743.1L19.8 744.1L20.1 745.2L20.4 746.2L20.7 747.3L20.9 748.3L21.2 749.4L21.4 750.5L21.6 751.5Z' fill='%231d1a1a'/%3E%3Cg transform='translate(19.3 740.8) rotate(-21.6) scale(0.85)'%3E%3Cpath d='M0 0C-3.2 -2 -3.6 -6 0 -10C0 -9 0 -9 0 -10C3.6 -6 3.2 -2 0 0Z' fill='%231d1a1a' stroke='%23efe8dc' stroke-width='.6' stroke-linejoin='round'/%3E%3Cpath d='M-1.2 -8.6C0.4 -6.6 0.8 -3.4 0 -0.8' fill='none' stroke='%23efe8dc' stroke-width='.55'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' fill='%231d1a1a' stroke='%23efe8dc' stroke-width='.5'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' transform='scale(-1 1)' fill='%231d1a1a' stroke='%23efe8dc' stroke-width='.5'/%3E%3Cpath d='M0 1.6C-1.4 1.4 -1.6 -0.6 0 -1C1.6 -0.6 1.4 1.4 0 1.6Z' fill='%231d1a1a'/%3E%3C/g%3E%3Cpath d='M17.2 743.6L16.4 743.3L15.7 743.1L15 742.8L14.2 742.5L13.5 742.2L12.8 741.8L12.1 741.5L11.3 741.2L10.6 740.8L9.9 740.4L9.2 740.4L9.6 741.1L10.2 741.5L10.9 741.9L11.6 742.4L12.3 742.8L13 743.2L13.7 743.6L14.4 744L15.1 744.4L15.8 744.8L16.6 745.1Z' fill='%231d1a1a'/%3E%3Cpath d='M32.8 1079.5L32 1077.8L31.1 1076L30.2 1074.3L29.2 1072.7L28.2 1071L27.1 1069.4L25.9 1067.9L24.8 1066.3L23.5 1064.8L22.3 1063.4L21.2 1063.1L21.4 1064.2L22.5 1065.7L23.6 1067.2L24.6 1068.8L25.6 1070.4L26.5 1072L27.4 1073.6L28.2 1075.3L29 1077L29.7 1078.7L30.4 1080.5Z' fill='%231d1a1a'/%3E%3Cpath d='M26.6 1069.2L25.8 1068.9L25 1068.6L24.2 1068.2L23.4 1067.8L22.5 1067.5L21.7 1067.1L21 1066.7L20.2 1066.2L19.4 1065.8L18.6 1065.4L18 1065.3L18.2 1065.9L19 1066.4L19.7 1067L20.5 1067.5L21.3 1067.9L22 1068.4L22.8 1068.9L23.6 1069.3L24.4 1069.8L25.2 1070.2L26 1070.6Z' fill='%231d1a1a'/%3E%3Cg transform='translate(21.8 1063.8) rotate(-40) scale(1)'%3E%3Cpath d='M0 0C-3.8600000000000003 -2 -4.260000000000001 -6 -0.48 -10C0 -8.7 0 -8.7 0.48 -10C4.260000000000001 -6 3.8600000000000003 -2 0 0Z' fill='%231d1a1a' stroke='%23efe8dc' stroke-width='.6' stroke-linejoin='round'/%3E%3Cpath d='M-1.5 -8.6C0.4 -6.6 0.8 -3.4 0 -0.8' fill='none' stroke='%23efe8dc' stroke-width='.55'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' fill='%231d1a1a' stroke='%23efe8dc' stroke-width='.5'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' transform='scale(-1 1)' fill='%231d1a1a' stroke='%23efe8dc' stroke-width='.5'/%3E%3Cpath d='M0 1.6C-1.4 1.4 -1.6 -0.6 0 -1C1.6 -0.6 1.4 1.4 0 1.6Z' fill='%231d1a1a'/%3E%3C/g%3E%3Cpath d='M32 0C36 105 28 315 32 420S28 735 32 840S28 1155 32 1260' fill='none' stroke='%231d1a1a' stroke-width='5.5'/%3E%3Cpath d='M31.2 40l-8 -7 4 11zM34.7 118l8 -7 -4 11zM33.2 236l8 -7 -4 11zM29.2 330l-8 -7 4 11zM33.2 404l8 -7 -4 11zM31.4 552l-8 -7 4 11zM33.5 640l8 -7 -4 11zM29.5 700l-8 -7 4 11zM34 856l8 -7 -4 11zM31.5 948l-8 -7 4 11zM34.2 1010l8 -7 -4 11zM32.4 1176l8 -7 -4 11zM29.7 1230l-8 -7 4 11z' fill='%231d1a1a'/%3E%3C/svg%3E");
+  /* the short stem under roses that don't sit on the plant */
+  --stem-tile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 150'%3E%3Cpath d='M30 0C31 50 27 100 30 150' fill='none' stroke='%231d1a1a' stroke-width='3.6'/%3E%3Cpath d='M30 74C38 60 52 56 58 58C54 70 42 78 30 74Z' fill='%231d1a1a' stroke='%23efe8dc' stroke-width='1.1'/%3E%3Cpath d='M32 73L52 61' fill='none' stroke='%23efe8dc' stroke-width='.9'/%3E%3Cpath d='M29 112l-8-6 7 12z' fill='%231d1a1a'/%3E%3C/svg%3E");
+
+  color-scheme: light;
+}
+
+/* dark mode: the contrary, a white plant cut out of dark paper (grain and
+   all, as the light paper isn't pure white either). It follows the system setting unless the visitor picks one with
+   the switch in the masthead (data-theme, kept by assets/js/site.js). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #221e1a;
+    --fg: #efe8dc;
+    --muted: #a39a90;
+    --line: rgb(239 232 220 / 0.2);
+    --red: #ef5a5f;
+    --on-red: #1a1714;
+    --stem: #f3eee5;
+    --leaf: #f3eee5;
+    --cut: #221e1a;
+    --petal: #f3eee5;
+    --petal-3: #ece6dc;
+    --petal-4: #e5ded2;
+    --petal-in: #faf7f1;
+    --petal-in-0: #fffdf9;
+    --petal-core: #fdfbf6;
+    --rim: #dcd5c9;
+    --rim-in: #f0eae1;
+    --photo-bg: #2e2924;
+    --root-line: #4d443d;
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .3 -.13'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    --stalk-tile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='1260'%3E%3Cpath d='M34 149.1L32.1 146.8L30.1 144.6L28.1 142.5L26.1 140.4L24 138.4L21.8 136.4L19.6 134.5L17.4 132.6L15.1 130.8L12.7 129L11.5 128.9L11.9 130.1L14.1 131.9L16.3 133.9L18.4 135.8L20.4 137.8L22.4 139.9L24.4 142L26.3 144.2L28.1 146.4L29.9 148.6L31.6 150.9Z' fill='%23f3eee5'/%3E%3Cpath d='M23.5 138.3L22.3 137.9L21.2 137.6L20.1 137.2L19 136.8L17.8 136.4L16.7 136L15.6 135.5L14.5 135.1L13.4 134.6L12.3 134.1L11.5 134.2L12 134.9L13 135.4L14.1 136L15.1 136.6L16.2 137.1L17.3 137.6L18.4 138.1L19.5 138.6L20.6 139.1L21.8 139.6L22.9 140Z' fill='%23f3eee5'/%3E%3Cg transform='translate(12.3 129.5) rotate(-52) scale(1.15)'%3E%3Cpath d='M0 0C-3.2 -2 -3.6 -6 0 -10C0 -9 0 -9 0 -10C3.6 -6 3.2 -2 0 0Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.6' stroke-linejoin='round'/%3E%3Cpath d='M-1.2 -8.6C0.4 -6.6 0.8 -3.4 0 -0.8' fill='none' stroke='%23221e1a' stroke-width='.55'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' transform='scale(-1 1)' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 1.6C-1.4 1.4 -1.6 -0.6 0 -1C1.6 -0.6 1.4 1.4 0 1.6Z' fill='%23f3eee5'/%3E%3C/g%3E%3Cpath d='M34.2 469.3L33.1 467.4L32 465.4L30.9 463.3L29.9 461.3L28.9 459.2L28 457.1L27.1 455L26.2 452.9L25.4 450.8L24.6 448.7L23.7 447.9L23.4 449L24 451.3L24.7 453.5L25.5 455.7L26.3 457.8L27.1 460L27.9 462.2L28.8 464.3L29.8 466.4L30.7 468.6L31.7 470.7Z' fill='%23f3eee5'/%3E%3Cg transform='translate(24 448.9) rotate(-18) scale(1.05)'%3E%3Cpath d='M0 0C-4.74 -2 -5.140000000000001 -6 -1.1199999999999999 -10C0 -8.3 0 -8.3 1.1199999999999999 -10C5.140000000000001 -6 4.74 -2 0 0Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.6' stroke-linejoin='round'/%3E%3Cpath d='M-1.9 -8.6C0.4 -6.6 0.8 -3.4 0 -0.8' fill='none' stroke='%23221e1a' stroke-width='.55'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' transform='scale(-1 1)' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 1.6C-1.4 1.4 -1.6 -0.6 0 -1C1.6 -0.6 1.4 1.4 0 1.6Z' fill='%23f3eee5'/%3E%3C/g%3E%3Cpath d='M31.9 758.9L29.8 756.9L27.6 754.8L25.5 752.7L23.5 750.5L21.5 748.3L19.5 746.1L17.6 743.8L15.8 741.4L13.9 739.1L12.2 736.7L11 736.1L11 737.5L12.7 740L14.4 742.5L16.1 744.9L17.9 747.4L19.8 749.8L21.7 752.1L23.6 754.4L25.6 756.7L27.7 758.9L29.8 761.1Z' fill='%23f3eee5'/%3E%3Cpath d='M23.6 751.1L23.3 750L22.9 748.9L22.6 747.9L22.2 746.8L21.8 745.8L21.4 744.7L21 743.7L20.6 742.7L20.2 741.7L19.7 740.7L19 740.1L18.9 741L19.2 742L19.5 743.1L19.8 744.1L20.1 745.2L20.4 746.2L20.7 747.3L20.9 748.3L21.2 749.4L21.4 750.5L21.6 751.5Z' fill='%23f3eee5'/%3E%3Cg transform='translate(19.3 740.8) rotate(-21.6) scale(0.85)'%3E%3Cpath d='M0 0C-3.2 -2 -3.6 -6 0 -10C0 -9 0 -9 0 -10C3.6 -6 3.2 -2 0 0Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.6' stroke-linejoin='round'/%3E%3Cpath d='M-1.2 -8.6C0.4 -6.6 0.8 -3.4 0 -0.8' fill='none' stroke='%23221e1a' stroke-width='.55'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' transform='scale(-1 1)' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 1.6C-1.4 1.4 -1.6 -0.6 0 -1C1.6 -0.6 1.4 1.4 0 1.6Z' fill='%23f3eee5'/%3E%3C/g%3E%3Cpath d='M17.2 743.6L16.4 743.3L15.7 743.1L15 742.8L14.2 742.5L13.5 742.2L12.8 741.8L12.1 741.5L11.3 741.2L10.6 740.8L9.9 740.4L9.2 740.4L9.6 741.1L10.2 741.5L10.9 741.9L11.6 742.4L12.3 742.8L13 743.2L13.7 743.6L14.4 744L15.1 744.4L15.8 744.8L16.6 745.1Z' fill='%23f3eee5'/%3E%3Cpath d='M32.8 1079.5L32 1077.8L31.1 1076L30.2 1074.3L29.2 1072.7L28.2 1071L27.1 1069.4L25.9 1067.9L24.8 1066.3L23.5 1064.8L22.3 1063.4L21.2 1063.1L21.4 1064.2L22.5 1065.7L23.6 1067.2L24.6 1068.8L25.6 1070.4L26.5 1072L27.4 1073.6L28.2 1075.3L29 1077L29.7 1078.7L30.4 1080.5Z' fill='%23f3eee5'/%3E%3Cpath d='M26.6 1069.2L25.8 1068.9L25 1068.6L24.2 1068.2L23.4 1067.8L22.5 1067.5L21.7 1067.1L21 1066.7L20.2 1066.2L19.4 1065.8L18.6 1065.4L18 1065.3L18.2 1065.9L19 1066.4L19.7 1067L20.5 1067.5L21.3 1067.9L22 1068.4L22.8 1068.9L23.6 1069.3L24.4 1069.8L25.2 1070.2L26 1070.6Z' fill='%23f3eee5'/%3E%3Cg transform='translate(21.8 1063.8) rotate(-40) scale(1)'%3E%3Cpath d='M0 0C-3.8600000000000003 -2 -4.260000000000001 -6 -0.48 -10C0 -8.7 0 -8.7 0.48 -10C4.260000000000001 -6 3.8600000000000003 -2 0 0Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.6' stroke-linejoin='round'/%3E%3Cpath d='M-1.5 -8.6C0.4 -6.6 0.8 -3.4 0 -0.8' fill='none' stroke='%23221e1a' stroke-width='.55'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' transform='scale(-1 1)' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 1.6C-1.4 1.4 -1.6 -0.6 0 -1C1.6 -0.6 1.4 1.4 0 1.6Z' fill='%23f3eee5'/%3E%3C/g%3E%3Cpath d='M32 0C36 105 28 315 32 420S28 735 32 840S28 1155 32 1260' fill='none' stroke='%23f3eee5' stroke-width='5.5'/%3E%3Cpath d='M31.2 40l-8 -7 4 11zM34.7 118l8 -7 -4 11zM33.2 236l8 -7 -4 11zM29.2 330l-8 -7 4 11zM33.2 404l8 -7 -4 11zM31.4 552l-8 -7 4 11zM33.5 640l8 -7 -4 11zM29.5 700l-8 -7 4 11zM34 856l8 -7 -4 11zM31.5 948l-8 -7 4 11zM34.2 1010l8 -7 -4 11zM32.4 1176l8 -7 -4 11zM29.7 1230l-8 -7 4 11z' fill='%23f3eee5'/%3E%3C/svg%3E");
+    --stem-tile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 150'%3E%3Cpath d='M30 0C31 50 27 100 30 150' fill='none' stroke='%23f3eee5' stroke-width='3.6'/%3E%3Cpath d='M30 74C38 60 52 56 58 58C54 70 42 78 30 74Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='1.1'/%3E%3Cpath d='M32 73L52 61' fill='none' stroke='%23221e1a' stroke-width='.9'/%3E%3Cpath d='M29 112l-8-6 7 12z' fill='%23f3eee5'/%3E%3C/svg%3E");
+    color-scheme: dark;
+  }
+}
+:root[data-theme='dark'] {
+  --bg: #221e1a;
+  --fg: #efe8dc;
+  --muted: #a39a90;
+  --line: rgb(239 232 220 / 0.2);
+  --red: #ef5a5f;
+  --on-red: #1a1714;
+  --stem: #f3eee5;
+  --leaf: #f3eee5;
+  --cut: #221e1a;
+  --petal: #f3eee5;
+  --petal-3: #ece6dc;
+  --petal-4: #e5ded2;
+  --petal-in: #faf7f1;
+  --petal-in-0: #fffdf9;
+  --petal-core: #fdfbf6;
+  --rim: #dcd5c9;
+  --rim-in: #f0eae1;
+  --photo-bg: #2e2924;
+  --root-line: #4d443d;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .3 -.13'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --stalk-tile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='1260'%3E%3Cpath d='M34 149.1L32.1 146.8L30.1 144.6L28.1 142.5L26.1 140.4L24 138.4L21.8 136.4L19.6 134.5L17.4 132.6L15.1 130.8L12.7 129L11.5 128.9L11.9 130.1L14.1 131.9L16.3 133.9L18.4 135.8L20.4 137.8L22.4 139.9L24.4 142L26.3 144.2L28.1 146.4L29.9 148.6L31.6 150.9Z' fill='%23f3eee5'/%3E%3Cpath d='M23.5 138.3L22.3 137.9L21.2 137.6L20.1 137.2L19 136.8L17.8 136.4L16.7 136L15.6 135.5L14.5 135.1L13.4 134.6L12.3 134.1L11.5 134.2L12 134.9L13 135.4L14.1 136L15.1 136.6L16.2 137.1L17.3 137.6L18.4 138.1L19.5 138.6L20.6 139.1L21.8 139.6L22.9 140Z' fill='%23f3eee5'/%3E%3Cg transform='translate(12.3 129.5) rotate(-52) scale(1.15)'%3E%3Cpath d='M0 0C-3.2 -2 -3.6 -6 0 -10C0 -9 0 -9 0 -10C3.6 -6 3.2 -2 0 0Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.6' stroke-linejoin='round'/%3E%3Cpath d='M-1.2 -8.6C0.4 -6.6 0.8 -3.4 0 -0.8' fill='none' stroke='%23221e1a' stroke-width='.55'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' transform='scale(-1 1)' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 1.6C-1.4 1.4 -1.6 -0.6 0 -1C1.6 -0.6 1.4 1.4 0 1.6Z' fill='%23f3eee5'/%3E%3C/g%3E%3Cpath d='M34.2 469.3L33.1 467.4L32 465.4L30.9 463.3L29.9 461.3L28.9 459.2L28 457.1L27.1 455L26.2 452.9L25.4 450.8L24.6 448.7L23.7 447.9L23.4 449L24 451.3L24.7 453.5L25.5 455.7L26.3 457.8L27.1 460L27.9 462.2L28.8 464.3L29.8 466.4L30.7 468.6L31.7 470.7Z' fill='%23f3eee5'/%3E%3Cg transform='translate(24 448.9) rotate(-18) scale(1.05)'%3E%3Cpath d='M0 0C-4.74 -2 -5.140000000000001 -6 -1.1199999999999999 -10C0 -8.3 0 -8.3 1.1199999999999999 -10C5.140000000000001 -6 4.74 -2 0 0Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.6' stroke-linejoin='round'/%3E%3Cpath d='M-1.9 -8.6C0.4 -6.6 0.8 -3.4 0 -0.8' fill='none' stroke='%23221e1a' stroke-width='.55'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' transform='scale(-1 1)' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 1.6C-1.4 1.4 -1.6 -0.6 0 -1C1.6 -0.6 1.4 1.4 0 1.6Z' fill='%23f3eee5'/%3E%3C/g%3E%3Cpath d='M31.9 758.9L29.8 756.9L27.6 754.8L25.5 752.7L23.5 750.5L21.5 748.3L19.5 746.1L17.6 743.8L15.8 741.4L13.9 739.1L12.2 736.7L11 736.1L11 737.5L12.7 740L14.4 742.5L16.1 744.9L17.9 747.4L19.8 749.8L21.7 752.1L23.6 754.4L25.6 756.7L27.7 758.9L29.8 761.1Z' fill='%23f3eee5'/%3E%3Cpath d='M23.6 751.1L23.3 750L22.9 748.9L22.6 747.9L22.2 746.8L21.8 745.8L21.4 744.7L21 743.7L20.6 742.7L20.2 741.7L19.7 740.7L19 740.1L18.9 741L19.2 742L19.5 743.1L19.8 744.1L20.1 745.2L20.4 746.2L20.7 747.3L20.9 748.3L21.2 749.4L21.4 750.5L21.6 751.5Z' fill='%23f3eee5'/%3E%3Cg transform='translate(19.3 740.8) rotate(-21.6) scale(0.85)'%3E%3Cpath d='M0 0C-3.2 -2 -3.6 -6 0 -10C0 -9 0 -9 0 -10C3.6 -6 3.2 -2 0 0Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.6' stroke-linejoin='round'/%3E%3Cpath d='M-1.2 -8.6C0.4 -6.6 0.8 -3.4 0 -0.8' fill='none' stroke='%23221e1a' stroke-width='.55'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' transform='scale(-1 1)' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 1.6C-1.4 1.4 -1.6 -0.6 0 -1C1.6 -0.6 1.4 1.4 0 1.6Z' fill='%23f3eee5'/%3E%3C/g%3E%3Cpath d='M17.2 743.6L16.4 743.3L15.7 743.1L15 742.8L14.2 742.5L13.5 742.2L12.8 741.8L12.1 741.5L11.3 741.2L10.6 740.8L9.9 740.4L9.2 740.4L9.6 741.1L10.2 741.5L10.9 741.9L11.6 742.4L12.3 742.8L13 743.2L13.7 743.6L14.4 744L15.1 744.4L15.8 744.8L16.6 745.1Z' fill='%23f3eee5'/%3E%3Cpath d='M32.8 1079.5L32 1077.8L31.1 1076L30.2 1074.3L29.2 1072.7L28.2 1071L27.1 1069.4L25.9 1067.9L24.8 1066.3L23.5 1064.8L22.3 1063.4L21.2 1063.1L21.4 1064.2L22.5 1065.7L23.6 1067.2L24.6 1068.8L25.6 1070.4L26.5 1072L27.4 1073.6L28.2 1075.3L29 1077L29.7 1078.7L30.4 1080.5Z' fill='%23f3eee5'/%3E%3Cpath d='M26.6 1069.2L25.8 1068.9L25 1068.6L24.2 1068.2L23.4 1067.8L22.5 1067.5L21.7 1067.1L21 1066.7L20.2 1066.2L19.4 1065.8L18.6 1065.4L18 1065.3L18.2 1065.9L19 1066.4L19.7 1067L20.5 1067.5L21.3 1067.9L22 1068.4L22.8 1068.9L23.6 1069.3L24.4 1069.8L25.2 1070.2L26 1070.6Z' fill='%23f3eee5'/%3E%3Cg transform='translate(21.8 1063.8) rotate(-40) scale(1)'%3E%3Cpath d='M0 0C-3.8600000000000003 -2 -4.260000000000001 -6 -0.48 -10C0 -8.7 0 -8.7 0.48 -10C4.260000000000001 -6 3.8600000000000003 -2 0 0Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.6' stroke-linejoin='round'/%3E%3Cpath d='M-1.5 -8.6C0.4 -6.6 0.8 -3.4 0 -0.8' fill='none' stroke='%23221e1a' stroke-width='.55'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 -0.4C-2.2 -2 -4.2 -4.4 -4.8 -7.4C-2.8 -5.4 -1.4 -3.8 0 -2.8Z' transform='scale(-1 1)' fill='%23f3eee5' stroke='%23221e1a' stroke-width='.5'/%3E%3Cpath d='M0 1.6C-1.4 1.4 -1.6 -0.6 0 -1C1.6 -0.6 1.4 1.4 0 1.6Z' fill='%23f3eee5'/%3E%3C/g%3E%3Cpath d='M32 0C36 105 28 315 32 420S28 735 32 840S28 1155 32 1260' fill='none' stroke='%23f3eee5' stroke-width='5.5'/%3E%3Cpath d='M31.2 40l-8 -7 4 11zM34.7 118l8 -7 -4 11zM33.2 236l8 -7 -4 11zM29.2 330l-8 -7 4 11zM33.2 404l8 -7 -4 11zM31.4 552l-8 -7 4 11zM33.5 640l8 -7 -4 11zM29.5 700l-8 -7 4 11zM34 856l8 -7 -4 11zM31.5 948l-8 -7 4 11zM34.2 1010l8 -7 -4 11zM32.4 1176l8 -7 -4 11zM29.7 1230l-8 -7 4 11z' fill='%23f3eee5'/%3E%3C/svg%3E");
+  --stem-tile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 150'%3E%3Cpath d='M30 0C31 50 27 100 30 150' fill='none' stroke='%23f3eee5' stroke-width='3.6'/%3E%3Cpath d='M30 74C38 60 52 56 58 58C54 70 42 78 30 74Z' fill='%23f3eee5' stroke='%23221e1a' stroke-width='1.1'/%3E%3Cpath d='M32 73L52 61' fill='none' stroke='%23221e1a' stroke-width='.9'/%3E%3Cpath d='M29 112l-8-6 7 12z' fill='%23f3eee5'/%3E%3C/svg%3E");
+  color-scheme: dark;
+}
+
+/* ---------- base ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 24px;
+}
+body {
+  margin: 0;
+  background: var(--bg) var(--grain);
+  color: var(--fg);
+  font: 400 0.9375rem/1.65 var(--f-mono);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+img {
+  height: auto;
+}
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+figure,
+ol,
+ul,
+address {
+  margin: 0;
+}
+ol,
+ul {
+  padding: 0;
+}
+[role='list'] {
+  list-style: none;
+}
+[hidden] {
+  display: none !important;
+}
+:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 3px;
+}
+main:focus {
+  outline: none;
+}
+::selection {
+  background: var(--red);
+  color: var(--on-red);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 200;
+  padding: 12px 16px;
+  background: var(--fg);
+  color: var(--bg);
+  /* invisible as well as out of the way: bounce scrolling past the top of the
+     page would show it otherwise */
+  opacity: 0;
+  transform: translateY(-160%);
+}
+.skip-link:focus {
+  opacity: 1;
+  transform: none;
+}
+
+/* small uppercase labels: dates, kinds, places */
+.label,
+.gig__date,
+.gig__where,
+.night__when,
+.night__where,
+.show__when,
+.show__where,
+.record__kind {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ---------- shared pieces ---------- */
+
+.wordmark,
+.emblem {
+  display: inline-block;
+  background: currentColor;
+  -webkit-mask: var(--shape) center / contain no-repeat;
+  mask: var(--shape) center / contain no-repeat;
+}
+.wordmark {
+  --shape: url('/assets/img/wordmark.svg');
+  aspect-ratio: 924 / 85;
+  height: 1em;
+}
+.emblem {
+  --shape: url('/assets/img/emblem.svg');
+  aspect-ratio: 710 / 661;
+  height: 1em;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1.5px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: 500 0.75rem/1 var(--f-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+.button:hover,
+.button--strong {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+}
+.button--strong:hover {
+  background: var(--red);
+  border-color: var(--red);
+}
+.button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+.arrow-link {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1.5px solid currentColor;
+}
+.arrow-link::after {
+  content: ' →';
+}
+
+/* ---------- roses ----------
+ * Black, like the band's emblem: dark petals cut apart by paper-coloured
+ * hairlines, the rolled edges a shade lighter. Sepals and hip too.
+ */
+
+.rose {
+  overflow: visible;
+}
+.rose-petal,
+.rose-rim {
+  stroke: var(--cut);
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+}
+.rose-petal.out {
+  fill: var(--petal);
+}
+.rose-petal.out.t3 {
+  fill: var(--petal-3);
+}
+.rose-petal.out.t4 {
+  fill: var(--petal-4);
+}
+.rose-petal.in {
+  fill: var(--petal-in);
+}
+.rose-petal.in.t0 {
+  fill: var(--petal-in-0);
+}
+.rose-petal.core {
+  fill: var(--petal-core);
+}
+.rose-rim.out {
+  fill: var(--rim);
+}
+.rose-rim.in {
+  fill: var(--rim-in);
+}
+.rose-sepal,
+.rose-hip {
+  fill: var(--leaf);
+  stroke: var(--cut);
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+}
+
+/* a short stem with a leaf under roses that don't sit on the plant: it
+   starts at the rose's base (65.8% down its box) */
+.stemmed {
+  position: relative;
+}
+.stemmed::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 64%;
+  left: 50%;
+  width: 34%;
+  aspect-ratio: 60 / 150;
+  translate: -50% 0;
+  background: var(--stem-tile) center top / 100% auto no-repeat;
+}
+
+/* a petal falling off a rose you touched (assets/js/site.js) */
+.falling-petal {
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* ---------- masthead ---------- */
+
+.masthead {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 24px;
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 14px var(--gutter);
+}
+.masthead__home {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  text-decoration: none;
+}
+.masthead__emblem {
+  height: 26px;
+}
+.masthead__wordmark {
+  height: 11px;
+}
+.nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 clamp(14px, 2.4vw, 28px);
+  list-style: none;
+}
+.nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.nav__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease);
+}
+.nav__link:hover::after,
+.nav__link[aria-current='page']::after {
+  transform: scaleX(1);
+}
+.nav__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--red);
+  color: var(--on-red);
+  font-size: 0.6875rem;
+  letter-spacing: 0;
+}
+@media (max-width: 600px) {
+  .nav {
+    width: 100%;
+  }
+  .nav__list {
+    justify-content: space-between;
+    gap: 0 10px;
+  }
+  .nav__link {
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+  }
+}
+/* the smallest phones: six links still fit on one row */
+@media (max-width: 374px) {
+  .nav__list {
+    gap: 0 6px;
+  }
+  .nav__link {
+    letter-spacing: 0.03em;
+  }
+}
+
+/* the dark mode switch: a half-filled circle that turns over */
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0 -12px 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+.theme-toggle[hidden] {
+  display: none;
+}
+.theme-toggle__icon {
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+  transition: rotate 0.5s var(--ease);
+}
+.theme-toggle[aria-pressed='true'] .theme-toggle__icon {
+  rotate: 180deg;
+}
+.nav {
+  margin-left: auto;
+}
+@media (max-width: 600px) {
+  /* the switch moves up next to the emblem; the menu gets its own row */
+  .theme-toggle {
+    order: -1;
+    margin-left: auto;
+  }
+  .masthead__home {
+    order: -2;
+  }
+}
+
+/* ---------- home: the crown ---------- */
+
+.crown {
+  --rose-w: min(25rem, 80vw);
+  display: grid;
+  justify-items: center;
+  padding: clamp(16px, 4vw, 48px) var(--gutter) 0;
+  text-align: center;
+}
+.crown__title {
+  font-size: 1rem;
+}
+.wordmark--crown {
+  display: block;
+  width: min(26rem, 76vw);
+  height: auto;
+  color: var(--fg);
+}
+.crown__tagline {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+/* the band's rose sits on top of the stalk: its base (65.8% down the box)
+   lines up with the top of the plant below */
+.crown__rose {
+  position: relative;
+  z-index: 2;
+  width: var(--rose-w);
+  margin-top: clamp(4px, 2vw, 20px);
+  margin-bottom: calc(var(--rose-w) * -0.2954);
+}
+.crown__rose .rose {
+  width: 100%;
+  height: auto;
+}
+
+/* the big section headings, as on the band's first site: On Stage, On Record, Up Next */
+.display {
+  font: 400 clamp(3rem, 13vw, 5rem) / 0.95 var(--f-serif);
+  letter-spacing: -0.01em;
+}
+
+/* ---------- home: the plant ----------
+ * src/templates/plant.js works out where everything goes and puts it into
+ * CSS variables on each show. On wide screens they are in u, a hundredth of
+ * the plant's width, so the plant fills the screen:
+ *   --y --sx        where the branch leaves the stalk
+ *   --reach --rise  where the branch ends (the rose sits there)
+ *   --rw --roll     the rose's size and tilt
+ *   --pl --pt --pw  the photo: inner edge, top, width
+ *   --ar            the photo's shape (taller than 3:4 is cropped to 3:4)
+ *   --npl           the photo's shift in from the stalk on narrow screens
+ * Narrow screens (the default): the stalk runs down the left edge, each show
+ * is a short branch with its rose above a print, one after the other.
+ */
+
+.plant {
+  --stalk-x: 2.4rem;
+  --u: 1rem;
+  /* narrow screens: the branch reaches this far (rem); roses at this scale */
+  --nreach: 4.6;
+  --nr: 0.78;
+  position: relative;
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 8rem 0 6rem;
+}
+/* narrow screens: a straight stalk with prickles and a few little shoots
+   into the margin (one long tile, so the repeat doesn't show; drawn by
+   scripts/narrow-stalk.js), drawn down as you scroll */
+.plant::before {
+  content: '';
+  position: absolute;
+  top: 7rem;
+  bottom: 0;
+  left: var(--stalk-x);
+  width: 64px;
+  margin-left: -32px;
+  background: var(--stalk-tile) center top / 64px 1260px repeat-y;
+  clip-path: inset(0 0 calc((1 - var(--grown, 1)) * 100%) 0);
+}
+/* …bending over from under the band's rose */
+.plant__bend {
+  position: absolute;
+  top: 0;
+  left: var(--stalk-x);
+  width: calc(50% - var(--stalk-x));
+  height: 7.1rem;
+  overflow: visible;
+  fill: none;
+}
+.plant__bend path {
+  stroke: var(--stem);
+  stroke-width: 5.5px;
+  vector-effect: non-scaling-stroke;
+}
+.stalk {
+  display: none;
+}
+/* stems: black, with a paper-coloured cut around them where they cross
+   something (src/templates/plant.js) */
+.strand {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.strand--out {
+  stroke: var(--cut);
+  stroke-width: calc((var(--w) + 2.6) * var(--ws, 1));
+}
+.strand--body {
+  stroke: var(--stem);
+  stroke-width: calc(var(--w) * var(--ws, 1));
+}
+/* little shoots off the stalk and beside the roses, often ending in a bud */
+.sprig__stem {
+  fill: var(--stem);
+}
+.sprig__bud :is(.rose-petal, .rose-rim, .rose-sepal, .rose-hip) {
+  stroke-width: var(--cut); /* drawn small: keep the cut lines as fine as on the big roses */
+}
+/* the wide stalk grows down with the page */
+.stalk {
+  clip-path: inset(0 0 calc((1 - var(--grown, 1)) * 100%) 0);
+}
+.stalk .prickle {
+  opacity: clamp(0, calc((var(--grown, 1) * var(--H) - var(--y)) * 2), 1);
+}
+.stalk .leaf,
+.stalk .sprig {
+  transform-box: view-box;
+  transform: scale(clamp(0, calc((var(--grown, 1) * var(--H) - var(--y)) * 0.6), 1));
+}
+
+.plant__title {
+  margin: 0 0 3rem calc(var(--stalk-x) + 1rem);
+}
+.gigs {
+  list-style: none;
+}
+.gig {
+  /* narrow screens: the branch is drawn at this scale, and the head (rose
+     above the junction) is this tall, in rem */
+  --k: calc(var(--nreach) / var(--reach));
+  --nh: calc(var(--rise) * var(--k) + var(--rw) * var(--nr) * 0.5682 + 0.3);
+  --p: 1; /* how far this show has grown, 0–1; set by assets/js/site.js */
+  --branch: clamp(0, calc(var(--p) * 2.4), 1);
+  --swell: clamp(0, calc((var(--p) - 0.42) * 2.6), 1); /* after the branch has arrived */
+  --show: clamp(0, calc((var(--p) - 0.5) * 3), 1);
+  position: relative;
+  padding: 0 var(--gutter) 3rem 0;
+}
+.gig__inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.branch {
+  position: absolute;
+  z-index: 2;
+  left: var(--stalk-x);
+  top: calc((var(--nh) - var(--rise)) * 1rem);
+  width: calc(var(--reach) * 1rem);
+  height: calc(var(--rise) * 1rem);
+  max-width: none; /* on wide screens each show is a zero-width point on the stalk */
+  overflow: visible;
+  transform-origin: 0 100%;
+  scale: var(--k);
+  pointer-events: none;
+  --ws: calc(0.55 / var(--k)); /* drawn small: thicker strokes, so they still read */
+}
+/* each piece of a branch grows in turn, between --a and --b along it */
+.branch .strand {
+  --g: clamp(0, calc((var(--branch) - var(--a)) / (var(--b) - var(--a))), 1);
+  stroke-dasharray: 1px 1px; /* every piece has pathLength="1" */
+  stroke-dashoffset: calc((1 - var(--g)) * 1px);
+  opacity: clamp(0, calc(var(--g) * 40), 1); /* no round cap dot before it starts */
+}
+.prickle {
+  fill: var(--stem);
+}
+/* on narrow screens the roses are drawn much bigger than their branches, so
+   the buds beside them would only peek out from behind them */
+.branch .spray {
+  display: none;
+}
+.branch .spray .strand {
+  --g: clamp(0, calc((var(--swell) - var(--a)) / (var(--b) - var(--a))), 1);
+}
+.branch .spray .sprig {
+  transform: scale(clamp(0, calc((var(--swell) - var(--at)) * 2.5), 1));
+}
+.branch .prickle {
+  opacity: clamp(0, calc((var(--branch) - var(--at)) * 6), 1);
+}
+.branch .leaf,
+.branch .sprig {
+  transform-box: view-box;
+  transform: scale(clamp(0, calc((var(--branch) - var(--at)) * 4), 1));
+}
+.leaf__stalk {
+  fill: none;
+  stroke: var(--stem);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+.leaf__blade {
+  fill: var(--leaf);
+  stroke: var(--cut);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+.leaf__vein {
+  fill: none;
+  stroke: var(--cut);
+  stroke-width: 0.8;
+  stroke-linecap: round;
+}
+
+.gig__rose {
+  position: absolute;
+  z-index: 3;
+  left: calc(var(--stalk-x) + var(--nreach) * 1rem);
+  top: calc((var(--nh) - var(--rise) * var(--k)) * 1rem);
+  width: calc(var(--rw) * var(--nr) * 1rem);
+  translate: -50% -65.79%;
+  transform-origin: 50% 65.79%;
+  rotate: calc(var(--roll) * 1deg);
+  scale: calc(0.2 + 0.8 * var(--swell));
+  opacity: clamp(0, calc(var(--swell) * 5), 1);
+  -webkit-tap-highlight-color: transparent;
+}
+.gig__rose .rose {
+  width: 100%;
+  height: auto;
+}
+
+/* the photo of the night: plain and straight, hanging below the branch, the
+   venue written underneath. Shows without photos just get their name. The
+   venue link covers the whole thing. */
+.gig__figure {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: calc(100% - var(--stalk-x) - 1.4rem - var(--npl) * 1rem);
+  /* it sits up against the branch, as on wide screens; the rose's sepals may
+     just touch it, the bloom stays clear */
+  /* the photo's top edge runs just above the rose's base, as on wide screens */
+  margin: calc((var(--nh) + var(--pt) * var(--k)) * 1rem) 0 0 calc(var(--stalk-x) + 1rem + var(--npl) * 1rem);
+  opacity: var(--show);
+  translate: 0 calc((1 - var(--show)) * 1rem);
+}
+.gig__figure--text {
+  /* writing only: under the rose, right of its stem, clear of the branch */
+  margin-top: calc((var(--nh) - var(--rise) * var(--k) + var(--rw) * var(--nr) * 0.2954 - 0.2) * 1rem);
+  margin-left: calc(var(--stalk-x) + (var(--nreach) + 0.5) * 1rem);
+  width: min(calc(100% - var(--stalk-x) - (var(--nreach) + 0.9) * 1rem), 18rem);
+}
+.gig__photo {
+  overflow: hidden;
+  background: var(--photo-bg);
+}
+.gig__photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--ar, auto); /* taller than 3:4 is cropped (plant.js) */
+  object-fit: cover;
+  transition: transform 0.9s var(--ease);
+}
+.gig__figure:hover .gig__photo img {
+  transform: scale(1.035);
+}
+.gig__caption {
+  padding-top: 0.7rem;
+}
+.gig__figure--text .gig__caption {
+  padding-top: 0;
+}
+.gig__next,
+.gig__where {
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.gig__next {
+  margin-bottom: 0.1rem;
+  color: var(--muted);
+}
+.gig__next [data-next-label] {
+  color: var(--red);
+}
+.gig__where {
+  margin-top: 0.2rem;
+  color: var(--muted);
+}
+.gig__venue {
+  font: 400 1.4rem / 1.12 var(--f-serif);
+  overflow-wrap: break-word;
+}
+.gig__venue a {
+  text-decoration: none;
+}
+.gig__venue a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.gig__venue a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+.gig__venue a:focus-visible {
+  outline: none;
+}
+.gig__venue a:focus-visible::after {
+  outline: 2px solid var(--fg);
+  outline-offset: 4px;
+}
+
+/* tablets: a little more room */
+@media (min-width: 37.5em) {
+  .plant {
+    --nreach: 6.4;
+    --nr: 0.95;
+    max-width: 52rem;
+  }
+  .gig {
+    padding-bottom: 3.6rem;
+  }
+}
+
+/* from 64em: the stalk meanders down the middle, shows on both sides, and
+   everything but the writing scales with the screen (--u) */
+@media (min-width: 64em) {
+  .page-home {
+    --u: calc(min(100vw - 3rem, 140rem) / 100);
+  }
+  .crown {
+    --rose-w: calc(26 * var(--u));
+  }
+  .plant {
+    --u: calc(min(100vw - 3rem, 140rem) / 100);
+    max-width: none;
+    height: calc(var(--H) * var(--u));
+    padding: 0;
+  }
+  .plant::before,
+  .plant__bend {
+    display: none;
+  }
+  .page-home .display {
+    font-size: calc(6.5 * var(--u));
+  }
+  .plant__title {
+    position: absolute;
+    top: 0;
+    left: calc(50% - 50 * var(--u));
+    margin: 0;
+  }
+  .stalk {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: calc(100 * var(--u));
+    max-width: none;
+    height: calc(var(--H) * var(--u));
+    translate: -50% 0;
+    overflow: visible;
+  }
+  .gig {
+    --dir: 1;
+    position: absolute;
+    top: calc(var(--y) * var(--u));
+    left: calc(50% + var(--sx) * var(--u));
+    width: 0;
+    height: 0;
+    padding: 0;
+  }
+  .gig[data-side='left'] {
+    --dir: -1;
+  }
+  .gig__inner {
+    position: static;
+    display: block;
+  }
+  .branch {
+    left: 0;
+    top: calc(var(--rise) * -1 * var(--u));
+    width: calc(var(--reach) * var(--u));
+    height: calc(var(--rise) * var(--u));
+    scale: none;
+  }
+  .gig[data-side='left'] .branch {
+    scale: -1 1;
+  }
+  .branch {
+    --ws: 1;
+  }
+  .branch .spray {
+    display: inline;
+  }
+  .gig__rose {
+    left: calc(var(--dir) * var(--reach) * var(--u));
+    top: calc(var(--rise) * -1 * var(--u));
+    width: calc(var(--rw) * var(--u));
+    rotate: calc(var(--dir) * var(--roll) * 1deg);
+  }
+  .gig__venue {
+    font-size: 1.75rem;
+  }
+  .gig__figure,
+  .gig__figure--text {
+    position: absolute;
+    top: calc(var(--pt) * var(--u));
+    width: calc(var(--pw) * var(--u));
+    margin: 0;
+  }
+  .gig[data-side='right'] .gig__figure {
+    left: calc(var(--pl) * var(--u));
+  }
+  .gig[data-side='left'] .gig__figure {
+    right: calc(var(--pl) * var(--u));
+  }
+}
+
+/* ---------- home: on record, up next ----------
+ * Below the shows, the stalk runs on to the roots: on narrow screens down the
+ * left edge, as above; on wide ones down the middle, between the two. */
+.coda {
+  --stalk-x: 2.4rem;
+  position: relative;
+  display: grid;
+  gap: 4rem;
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 1rem var(--gutter) 6rem calc(var(--stalk-x) + 1rem);
+}
+.coda::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--stalk-x);
+  width: 64px;
+  margin-left: -32px;
+  background: var(--stalk-tile) center top / 64px 1260px repeat-y;
+}
+.coda__col {
+  display: grid;
+  gap: 1.75rem;
+  align-content: start;
+}
+.coda__item {
+  display: grid;
+  gap: 1.25rem;
+}
+.coda__cover {
+  display: block;
+  width: min(100%, 16rem);
+}
+.coda__cover img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.coda__label,
+.coda__where {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.coda__label--next {
+  color: var(--red);
+}
+.coda__name {
+  margin-top: 0.3rem;
+  font: 400 clamp(1.6rem, 3vw, 2.2rem) / 1.1 var(--f-serif);
+  overflow-wrap: break-word;
+}
+.coda__name a {
+  font: inherit;
+  letter-spacing: 0;
+  text-transform: none;
+  text-decoration: none;
+}
+.coda__name a:hover {
+  text-decoration: underline;
+}
+.coda__where {
+  margin-top: 0.4rem;
+}
+.coda__where a {
+  font-size: inherit;
+  letter-spacing: inherit;
+}
+.coda__text {
+  margin-top: 0.6rem;
+  max-width: 34ch;
+}
+.coda__shows {
+  list-style: none;
+}
+/* only the next show; the ones after it wait on the Upcoming page */
+.coda__shows li:not([hidden]) ~ li {
+  display: none;
+}
+.coda__show {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+.coda__show[hidden] {
+  display: none;
+}
+.coda__bud {
+  display: block;
+  margin-bottom: 4rem; /* room for its stem */
+}
+.coda__bud .rose {
+  width: 100%;
+  height: auto;
+}
+.coda__more {
+  margin-top: 0.4rem;
+}
+@media (min-width: 37.5em) {
+  .coda {
+    max-width: 52rem;
+  }
+  .coda__release {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+    align-items: end;
+  }
+  .coda__cover {
+    width: 100%;
+  }
+}
+@media (min-width: 64em) {
+  .coda {
+    --u: calc(min(100vw - 3rem, 140rem) / 100);
+    grid-template-columns: 1fr 1fr;
+    column-gap: calc(12 * var(--u));
+    max-width: none;
+    width: calc(100 * var(--u));
+    padding: calc(2 * var(--u)) 0 calc(10 * var(--u));
+  }
+  /* the stalk, as wide as on the plant, straight down the middle */
+  .coda::before {
+    left: 50%;
+    width: calc(0.65 * var(--u));
+    margin-left: calc(-0.325 * var(--u));
+    background: var(--stem);
+  }
+  .coda__show {
+    grid-template-columns: calc(9 * var(--u)) minmax(0, 1fr);
+  }
+}
+
+/* ---------- page heads ---------- */
+
+.pagehead {
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(28px, 6vw, 72px) var(--gutter) clamp(24px, 4vw, 40px);
+}
+.pagehead__title {
+  font: 400 clamp(3rem, 8vw, 6.5rem) / 1 var(--f-serif);
+}
+.pagehead__line {
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+/* ---------- a night ---------- */
+
+.night {
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: clamp(16px, 4vw, 40px) var(--gutter) clamp(56px, 8vw, 96px);
+}
+.night__head {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+  gap: clamp(24px, 5vw, 72px);
+  align-items: center;
+}
+.night__rose {
+  width: 100%;
+  max-width: 380px;
+  justify-self: center;
+}
+.night__rose .rose {
+  width: 100%;
+  height: auto;
+}
+.night__rose.stemmed::before {
+  width: 22%;
+}
+.lost__rose {
+  margin-bottom: 120px; /* room for its stem */
+}
+.night__when,
+.night__where {
+  color: var(--muted);
+}
+.night__title {
+  margin: 10px 0 6px;
+  font: 400 clamp(2.2rem, 4.6vw, 3.6rem) / 1.02 var(--f-serif);
+  overflow-wrap: anywhere;
+}
+.night__info,
+.night__link {
+  margin-top: 14px;
+}
+.night__story {
+  max-width: 54ch;
+  margin-top: 22px;
+}
+.night__story p + p {
+  margin-top: 0.9em;
+}
+
+.gallery {
+  margin-top: clamp(40px, 6vw, 80px);
+}
+.gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2.4vw, 32px);
+  align-items: start;
+}
+.gallery__item:first-child {
+  grid-column: 1 / -1;
+}
+.gallery__item:last-child:nth-child(even) {
+  grid-column: 1 / -1;
+}
+.gallery__link {
+  display: block;
+  overflow: hidden;
+  background: var(--photo-bg);
+  cursor: zoom-in;
+}
+.gallery__link img {
+  width: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease);
+}
+.gallery__link:hover img {
+  transform: scale(1.025);
+}
+/* the cover keeps its own proportions (reserved through width/height, so
+   nothing jumps while it loads); the others are cropped to the same shape:
+   landscape 3:2, portrait 3:4 */
+.gallery__item:first-child img {
+  max-height: 80vh;
+}
+.gallery__item:not(:first-child) img {
+  aspect-ratio: 3 / 2;
+}
+.gallery__item--portrait:not(:first-child) img {
+  aspect-ratio: 3 / 4;
+}
+/* a portrait or square cover is shown whole rather than cut down to a strip */
+.gallery__item--portrait:first-child {
+  justify-self: center;
+}
+.gallery__item--portrait:first-child img {
+  width: auto;
+  max-width: 100%;
+}
+/* a portrait photo left alone on the last row stays the size of the others,
+   centred, instead of filling the whole width */
+.gallery__item--portrait:not(:first-child):last-child:nth-child(even) {
+  justify-self: center;
+  width: calc((100% - clamp(16px, 2.4vw, 32px)) / 2);
+}
+
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 40px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.pager__link {
+  display: grid;
+  gap: 4px;
+  font: 400 1.4rem/1.1 var(--f-serif);
+  text-decoration: none;
+}
+.pager__link--end {
+  text-align: right;
+}
+.pager__hint {
+  color: var(--muted);
+  font: 500 0.6875rem/1 var(--f-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+a.pager__link:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+@media (max-width: 759px) {
+  .night__head {
+    grid-template-columns: 1fr;
+  }
+  .night__rose {
+    max-width: 260px;
+  }
+}
+
+/* ---------- upcoming ---------- */
+
+.shows {
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 0 var(--gutter) clamp(56px, 8vw, 96px);
+}
+.show {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: clamp(16px, 3vw, 40px);
+  align-items: start;
+  padding: 28px 0;
+  border-top: 1px solid var(--line);
+}
+.show:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.show__rose .rose {
+  width: 100%;
+  height: auto;
+}
+.show__when {
+  color: var(--red);
+}
+.show__where {
+  color: var(--muted);
+}
+.show__venue {
+  margin: 6px 0 4px;
+  font: 400 clamp(1.7rem, 3vw, 2.2rem) / 1.1 var(--f-serif);
+}
+.show__venue a {
+  text-decoration: none;
+}
+.show__venue a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+.show__info {
+  margin-top: 10px;
+}
+
+.dormant {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: clamp(24px, 6vw, 64px) 0;
+  text-align: center;
+}
+.dormant__bud {
+  width: 150px;
+  margin-bottom: 86px; /* room for its stem */
+  animation: sway 6s ease-in-out infinite;
+  transform-origin: 50% 66%;
+}
+@keyframes sway {
+  50% {
+    rotate: -3deg;
+  }
+}
+.dormant__text {
+  font: 400 1.5rem/1.2 var(--f-serif);
+}
+.dormant__more {
+  color: var(--muted);
+}
+
+@media (max-width: 600px) {
+  .show {
+    grid-template-columns: 80px minmax(0, 1fr);
+  }
+}
+
+/* ---------- about ---------- */
+
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(24px, 5vw, 64px);
+  align-items: start;
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 0 var(--gutter) clamp(56px, 8vw, 96px);
+}
+.about__photo img {
+  width: 100%;
+}
+.about__text p + p {
+  margin-top: 1em;
+}
+.about__lead {
+  font: 400 clamp(1.5rem, 2.4vw, 1.85rem) / 1.25 var(--f-serif);
+}
+/* a link in running text reads as part of the sentence */
+.about__text p:not(.about__links) a {
+  font-weight: inherit;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.about__links {
+  display: flex;
+  gap: 24px;
+  margin-top: 1.6em !important;
+}
+@media (max-width: 759px) {
+  .about {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- music ---------- */
+
+.records {
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 0 var(--gutter) clamp(56px, 8vw, 96px);
+}
+.record {
+  display: grid;
+  grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+  gap: clamp(20px, 4vw, 48px);
+  align-items: start;
+  padding: 32px 0;
+  border-top: 1px solid var(--line);
+}
+.record__cover {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  box-shadow: 0 10px 28px rgb(29 25 22 / 0.18);
+}
+.record__kind {
+  color: var(--muted);
+}
+.record__title {
+  margin: 6px 0 10px;
+  font: 400 clamp(1.7rem, 3vw, 2.2rem) / 1.1 var(--f-serif);
+}
+.record__text {
+  max-width: 52ch;
+}
+.record__tracks {
+  max-width: 30rem;
+  margin-top: 14px;
+  padding: 0;
+  list-style: none;
+  counter-reset: track;
+}
+.record__tracks li {
+  display: flex;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+  counter-increment: track;
+}
+.record__tracks li::before {
+  content: counter(track, decimal-leading-zero);
+  color: var(--muted);
+}
+.record__slot:not(:empty) {
+  margin-top: 18px;
+}
+.record__slot iframe {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  border: 0;
+  border-radius: 12px;
+}
+/* before the first "Play here", so it's read before anything loads */
+.records__note {
+  max-width: 46rem;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.records__note a {
+  font-weight: inherit;
+  letter-spacing: 0;
+  text-transform: none;
+}
+@media (max-width: 600px) {
+  .record {
+    grid-template-columns: 1fr;
+  }
+  .record__sleeve {
+    max-width: 260px;
+  }
+}
+
+/* ---------- imprint & 404 ---------- */
+
+.legal {
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 0 var(--gutter) clamp(56px, 8vw, 96px);
+  font-size: 0.875rem;
+}
+.legal > * {
+  max-width: 46rem;
+}
+.legal p + p,
+.legal p + address {
+  margin-top: 1em;
+}
+.legal__address {
+  margin-top: 1em;
+  font-style: normal;
+}
+.legal__heading {
+  margin: 2em 0 0.5em;
+  font: 400 1.6rem/1.1 var(--f-serif);
+}
+.legal__subheading {
+  margin: 1.6em 0 0.4em;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+.legal__list {
+  margin: 0.6em 0 1em;
+  padding-left: 1.4em;
+}
+.legal__list li + li {
+  margin-top: 0.3em;
+}
+.legal a {
+  font-weight: inherit;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.legal__source {
+  margin-top: 2em !important;
+  color: var(--muted);
+}
+
+.lost {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 12px;
+  min-height: 60vh;
+  padding: 48px var(--gutter);
+  text-align: center;
+}
+.lost__rose {
+  width: min(240px, 60vw);
+}
+.lost__rose .rose {
+  width: 100%;
+  height: auto;
+}
+.lost__title {
+  font: 400 clamp(2rem, 4vw, 2.6rem) / 1.1 var(--f-serif);
+}
+.lost__text {
+  color: var(--muted);
+}
+
+/* ---------- footer: the roots ---------- */
+
+.roots {
+  position: relative;
+  padding: 150px var(--gutter) 36px;
+  text-align: center;
+  overflow: clip;
+}
+.roots__drawing {
+  position: absolute;
+  top: 0;
+  left: var(--root-x, 50%);
+  width: 1200px;
+  max-width: none;
+  height: 220px;
+  transform: translateX(-50%);
+  fill: none;
+  stroke: var(--root-line);
+  stroke-width: 3;
+  stroke-linecap: round;
+  -webkit-mask-image: linear-gradient(#000 35%, transparent 95%);
+  mask-image: linear-gradient(#000 35%, transparent 95%);
+}
+/* on the homepage the roots start right under the stalk: on narrow screens
+   that runs 2.4rem in from the edge of the (centred) plant */
+.page-home .roots {
+  --root-x: calc(max(0px, (100% - 34rem) / 2) + 2.4rem);
+}
+@media (min-width: 37.5em) {
+  .page-home .roots {
+    --root-x: calc(max(0px, (100% - 52rem) / 2) + 2.4rem);
+  }
+}
+@media (min-width: 64em) {
+  .page-home .roots {
+    --root-x: 50%;
+  }
+  .page-home .roots__trunk {
+    stroke-width: calc(min(100vw - 3rem, 140rem) * 0.0065);
+  }
+}
+/* the stalk going on into the ground: as wide as the stalk above it (5.5px
+   on narrow screens, 0.65u on wide ones), fading out as the roots take over.
+   Only on the homepage: elsewhere there's no stalk above it. */
+.roots__trunk {
+  display: none;
+  stroke: url(#trunk-fade);
+  stroke-width: 5.5px;
+  stroke-linecap: butt;
+}
+.page-home .roots__trunk {
+  display: inline;
+}
+.roots__stop {
+  stop-color: var(--stem);
+}
+.roots__stop--end {
+  stop-opacity: 0;
+}
+.roots__inner {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+}
+.roots__title {
+  font: 400 clamp(2.5rem, 6vw, 5rem) / 1.05 var(--f-serif);
+}
+.roots__mail a {
+  font-weight: 500;
+}
+.roots__socials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 20px;
+  margin-top: 6px;
+  list-style: none;
+}
+.roots__socials a {
+  display: inline-block;
+  padding: 10px 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.roots__socials a:hover {
+  color: var(--fg);
+}
+.roots__legal {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+/* ---------- cursor ----------
+ * With a mouse, a little dot follows the pointer, as on the band's old site,
+ * and opens into a ring over links. Over the nights it grows into a disc that
+ * says what a click does: ↗ over a show ("open this night"), + over gallery
+ * photos ("enlarge"). Plant-coloured with a cut around it, like everything on
+ * the plant, so it stands out on the page and on any photo alike.
+ * Set up by assets/js/site.js; nothing changes without it.
+ */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s;
+  will-change: transform;
+}
+.cursor.is-in {
+  opacity: 1;
+}
+.cursor__dot,
+.cursor__disc {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--stem);
+}
+.cursor__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  margin: -0.25rem 0 0 -0.25rem;
+  box-shadow: 0 0 0 1.5px var(--cut);
+  transition:
+    width 0.2s,
+    height 0.2s,
+    margin 0.2s,
+    background-color 0.2s,
+    scale 0.2s,
+    opacity 0.2s;
+}
+/* over a link it opens into a ring, so the text underneath stays readable */
+.cursor.is-link .cursor__dot {
+  width: 1.6rem;
+  height: 1.6rem;
+  margin: -0.8rem 0 0 -0.8rem;
+  background-color: transparent;
+  box-shadow:
+    inset 0 0 0 1.5px var(--stem),
+    0 0 0 1px var(--cut);
+}
+.cursor.is-on .cursor__dot {
+  opacity: 0;
+  scale: 0;
+}
+.cursor__disc {
+  width: 5.5rem;
+  height: 5.5rem;
+  margin: -2.75rem 0 0 -2.75rem;
+  box-shadow: 0 0 0 2px var(--cut);
+  color: var(--cut);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.cursor.is-on .cursor__disc {
+  opacity: 1;
+}
+.cursor svg {
+  position: absolute;
+  inset: 0;
+  width: 2.1rem;
+  height: 2.1rem;
+  margin: auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.cursor[data-mode='open'] .cursor__open,
+.cursor[data-mode='zoom'] .cursor__zoom {
+  opacity: 1;
+}
+.has-cursor [data-cursor],
+.has-cursor [data-cursor] * {
+  cursor: none;
+}
+
+/* ---------- photo viewer ---------- */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #14110f; /* solid: the light page must not show through */
+  color: var(--paper);
+}
+.lightbox::backdrop {
+  background: #14110f;
+}
+.lightbox[open] {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+.lightbox__bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px var(--gutter);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+/* the photo fills the frame between the bar and the caption and scales to fit
+   inside it (percentage heights in a grid are measured differently by Safari) */
+.lightbox__stage {
+  position: relative;
+  min-height: 0;
+  margin: 0 var(--gutter);
+}
+.lightbox__stage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  object-fit: contain;
+}
+.lightbox__caption {
+  padding: 12px var(--gutter) 20px;
+  color: #b5aba0;
+  font-size: 0.8125rem;
+  text-align: center;
+}
+.lightbox__nav {
+  display: flex;
+  gap: 8px;
+}
+.lightbox .button {
+  min-width: 44px;
+  border-color: rgb(239 232 220 / 0.6);
+}
+.lightbox .button:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+.lightbox :focus-visible {
+  outline-color: var(--paper);
+}
+
+/* ---------- motion ----------
+ * The plant grows while you scroll (assets/js/site.js sets --grown and --p);
+ * roses bloom; touching a rose drops a petal; pages fall into each other.
+ * Without the `grow` class (no script, or reduced motion) everything is
+ * simply there, fully grown.
+ */
+
+.grow .plant {
+  --grown: 0;
+}
+.grow .gig {
+  --p: 0;
+}
+.grow .crown__rose:not([data-ready]),
+.grow .night__rose[data-bloom-on-load]:not([data-ready]) {
+  opacity: 0;
+}
+
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root) {
+  animation: 240ms ease-in both page-out;
+}
+::view-transition-new(root) {
+  animation: 420ms var(--ease) both page-in;
+}
+::view-transition-group(*) {
+  animation-duration: 520ms;
+  animation-timing-function: var(--ease);
+}
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media print {
+  .masthead,
+  .roots__drawing,
+  .actions {
+    display: none;
+  }
+}
